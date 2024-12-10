@@ -18,6 +18,12 @@ import Straddle from "./Strategy/Straddle ";
 import MultiStrikeStraddle from "./Strategy/MultiStrikeStraddle";
 import StraddleSnapshot from "./Strategy/StraddleSnapshot";
 import IOAnalysis from "./Options/IOAnalysis";
+import TradingStrike from "./Options/TradingStrike";
+import CallVsPutIO from "./Options/CallVsPutIO";
+import PutCallRatio from "./Options/PutCallRatio";
+import AtmPremium from "./Options/AtmPremium";
+import LongVsShort from "./Options/LongVsShort";
+import OPtionPriceVsIO from "./Options/OPtionPriceVsIo";
 function App() {
   return (
 
@@ -50,6 +56,12 @@ function App() {
           <Route path="/multiStrikeStraddle" element={<MultiStrikeStraddle/>}/>
           <Route path="/straddleSnapshot" element={<StraddleSnapshot/>}/>
           <Route path="/IOAnalysis" element={<IOAnalysis/>}/>
+          <Route path="/tradingStrike" element={<TradingStrike/>}/>
+          <Route path="/callVsPutIO" element={<CallVsPutIO/>}/>
+          <Route path="/putCallRatio" element={<PutCallRatio/>}/>
+          <Route path="/atmPremium" element={<AtmPremium/>}/>
+          <Route path="/longVsShort" element={<LongVsShort/>}/>
+          <Route path="/OptionPriceVsIO" element={<OPtionPriceVsIO/>}/>
         </Routes>
 
       </BrowserRouter>

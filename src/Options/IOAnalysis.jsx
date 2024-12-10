@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -25,6 +25,8 @@ ChartJS.register(
 
 const IOAnalysis = () => {
   const [strikeCount, setStrikeCount] = useState(30);
+  const [live, setLive] = useState("false");
+  const [data, setData] = useState([]);
   // Data for Open Interest Bar Chart
   const openInterestData = {
     labels: Array.from({ length: strikeCount }, (_, i) => `Strike ${i + 1}`),
@@ -34,17 +36,36 @@ const IOAnalysis = () => {
         data: Array.from({ length: strikeCount }, () =>
           Math.floor(Math.random() * 4000 + 1000)
         ),
-        backgroundColor: "rgba(54, 162, 235, 0.7)", // Blue
+        backgroundColor: "red", 
       },
       {
         label: "PE OI Change",
         data: Array.from({ length: strikeCount }, () =>
           Math.floor(Math.random() * 4000 + 1000)
         ),
-        backgroundColor: "rgba(255, 99, 132, 0.7)", // Red
+        backgroundColor: "blue",
       },
     ],
   };
+  const generateRandomData = (count) =>
+    Array(count)
+      .fill()
+      .map(() => Math.floor(Math.random() * 5000) + 1000);
+      
+  useEffect(() => {
+    setData(generateRandomData(strikeCount));
+  }, [strikeCount]);
+  useEffect(() => {
+    let interval;
+    if (live) {
+      interval = setInterval(() => {
+        setData(generateRandomData(strikeCount));
+      }, 3000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [live, strikeCount]);
 
   // Data for Line Chart
   const futureLineData = {
@@ -116,8 +137,13 @@ const IOAnalysis = () => {
                 <option value="hour">Hour</option>
               </select>
             </div>
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg">
-              Live
+            <button
+              className={`px-4 py-2 rounded-lg text-white ${
+                live ? "bg-red-600" : "bg-green-600"
+              }`}
+              onClick={() => setLive(!live)}
+            >
+              {live ? "Stop Live" : "Live"}
             </button>
           </div>
         </div>
@@ -129,10 +155,9 @@ const IOAnalysis = () => {
             <h2 class="text-lg font-semibold mb-4">Open Interest</h2>
             <Bar data={openInterestData} options={{ responsive: true }} />
             <div class="col-span-2">
-            <Bar data={openInterestData} options={{ responsive: true }} />
+              <Bar data={openInterestData} options={{ responsive: true }} />
+            </div>
           </div>
-          </div>
-          
 
           {/* Right Section: Move to top-right */}
           <div class="col-span-1 flex flex-col space-y-6">
@@ -172,4 +197,3 @@ const IOAnalysis = () => {
 };
 
 export default IOAnalysis;
-
